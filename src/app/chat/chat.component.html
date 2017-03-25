@@ -1,0 +1,8 @@
+<div class="log">
+    <div class="message" *ngFor="let message of messages">
+        <span class="timestamp">{{ message.timestamp }}</span>
+        <span class="author">{{ message.author }}</span>
+        <span class="body">{{ message.body }}</span>
+    </div>
+</div>
+<input [(ngModel)]="body" (keypress)="send($event)" />
