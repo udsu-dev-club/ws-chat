@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"strings"
-	"time"
 
 	"github.com/gorilla/websocket"
 )
@@ -61,7 +60,11 @@ func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			serr := err.Error()
 			res.Error = &serr
 		}
-		ws.WriteJSON(res)
+		if len(*id) > 0 {
+			s.Direct(*id, res)
+		} else {
+			ws.WriteJSON(res)
+		}
 	}
 }
 func (s *server) Switch(id *string, req *request, ws *websocket.Conn) error {
@@ -139,9 +142,8 @@ func (s *server) Publish(id *string, req *request, ws *websocket.Conn) error {
 		return err
 	}
 	msg := &message{
-		Timestamp: time.Now().UTC(),
-		Author:    *id,
-		Body:      d.Message,
+		Author: *id,
+		Body:   d.Message,
 	}
 	msgb, err := json.Marshal(msg)
 	if err != nil {
@@ -150,14 +152,14 @@ func (s *server) Publish(id *string, req *request, ws *websocket.Conn) error {
 	}
 	msgj := json.RawMessage(msgb)
 	res := response{
-		ID:   -1,
-		Cmd:  cmdSub,
+		ID:   "-1",
+		Cmd:  cmdPub,
 		Data: &msgj,
 	}
 	if d.Message[0] == '@' {
 		receiver := strings.SplitN(d.Message, " ", 1)[0]
 		if s.Direct(receiver, res) {
-			ws.WriteJSON(res)
+			s.Direct(*id, res)
 
 			return nil
 		}

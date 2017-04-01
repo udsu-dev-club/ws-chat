@@ -41,7 +41,7 @@ func (h *hub) Add(id string, ws *websocket.Conn) error {
 	rd := json.RawMessage(bd)
 
 	res := &response{
-		ID:    -1,
+		ID:    "-1",
 		Cmd:   cmdLogin,
 		Error: nil,
 		Data:  &rd,

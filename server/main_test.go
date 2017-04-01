@@ -23,8 +23,26 @@ import (
 var users = []string{"Ivan", "Petr", "Vasiliy"}
 
 type Case struct {
-	Requests  map[string]json.RawMessage `json:"requests"`
-	Responses map[string]json.RawMessage `json:"responses"`
+	Requests  map[string]json.RawMessage            `json:"requests"`
+	Responses map[string]map[string]json.RawMessage `json:"responses"`
+}
+
+type ID struct {
+	ID string `json:"id"`
+}
+
+func wait(t *testing.T, ws *websocket.Conn, responses map[string]json.RawMessage) {
+	for len(responses) > 0 {
+		ws.SetReadDeadline(time.Now().Add(time.Second))
+		res := json.RawMessage{}
+		require.NoError(t, ws.ReadJSON(&res))
+		id := &ID{}
+		require.NoError(t, json.Unmarshal(res, id))
+		expect, ok := responses[id.ID]
+		require.True(t, ok, id.ID)
+		assert.JSONEq(t, string(expect), string(res))
+		delete(responses, id.ID)
+	}
 }
 
 func TestMain(m *testing.M) {
@@ -65,10 +83,7 @@ func TestWorkflow(t *testing.T) {
 				require.NoError(t, conns[u].WriteJSON(d))
 			}
 			for u, d := range cc.Responses {
-				conns[u].SetReadDeadline(time.Now().Add(time.Second))
-				res := json.RawMessage{}
-				require.NoError(t, conns[u].ReadJSON(&res))
-				assert.JSONEq(t, string(d), string(res))
+				wait(t, conns[u], d)
 			}
 		})
 	}

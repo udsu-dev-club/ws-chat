@@ -1,9 +1,6 @@
 package main
 
-import (
-	"encoding/json"
-	"time"
-)
+import "encoding/json"
 
 type command string
 
@@ -12,11 +9,10 @@ const (
 	cmdLogout command = "LOGOUT"
 	cmdPub    command = "PUBLISH"
 	cmdUsers  command = "USERS"
-	cmdSub    command = "SUBSCRIBE"
 )
 
 type request struct {
-	ID   int32            `json:"id"`
+	ID   string           `json:"id"`
 	Cmd  command          `json:"cmd"`
 	Data *json.RawMessage `json:"data,omitempty"`
 }
@@ -30,7 +26,7 @@ type reqPublishData struct {
 }
 
 type response struct {
-	ID    int32            `json:"id"`
+	ID    string           `json:"id"`
 	Cmd   command          `json:"cmd"`
 	Error *string          `json:"error,omitempty"`
 	Data  *json.RawMessage `json:"data,omitempty"`
@@ -45,7 +41,6 @@ type username struct {
 }
 
 type message struct {
-	Timestamp time.Time `json:"timestamp"`
-	Author    string    `json:"author"`
-	Body      string    `json:"body"`
+	Author string `json:"author"`
+	Body   string `json:"body"`
 }
