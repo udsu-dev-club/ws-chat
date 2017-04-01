@@ -124,4 +124,52 @@ func TestWorkflow(t *testing.T) {
 		assert.Equal(t, cmdLogin, res.Cmd)
 		assert.Equal(t, "Already exists", *res.Error)
 	})
+
+	connVasiliy, _, err := dlr.Dial("ws://localhost:8080/ws", nil)
+	require.NoError(t, err)
+
+	t.Run("5.Login Vasiliy", func(t *testing.T) {
+		d := &username{
+			Username: "Vasiliy",
+		}
+		dd, err := json.Marshal(d)
+		require.NoError(t, err)
+		dj := json.RawMessage(dd)
+		require.NoError(t, connVasiliy.WriteJSON(&request{
+			ID:   3,
+			Cmd:  cmdLogin,
+			Data: &dj,
+		}))
+		{
+			res := &response{}
+			connVasiliy.SetReadDeadline(time.Now().Add(time.Second))
+			require.NoError(t, connVasiliy.ReadJSON(res))
+			require.Nil(t, res.Error)
+			assert.EqualValues(t, 3, res.ID)
+			assert.Equal(t, cmdLogin, res.Cmd)
+		}
+		{
+			res := &response{}
+			connIvan.SetReadDeadline(time.Now().Add(time.Second))
+			require.NoError(t, connIvan.ReadJSON(res))
+			require.Nil(t, res.Error)
+			assert.EqualValues(t, -1, res.ID)
+			assert.Equal(t, cmdLogin, res.Cmd)
+			d := &username{}
+			require.NoError(t, json.Unmarshal(*res.Data, d))
+			assert.Equal(t, "Vasiliy", d.Username)
+		}
+		{
+			res := &response{}
+			connPetr.SetReadDeadline(time.Now().Add(time.Second))
+			require.NoError(t, connPetr.ReadJSON(res))
+			require.Nil(t, res.Error)
+			assert.EqualValues(t, -1, res.ID)
+			assert.Equal(t, cmdLogin, res.Cmd)
+			d := &username{}
+			require.NoError(t, json.Unmarshal(*res.Data, d))
+			assert.Equal(t, "Vasiliy", d.Username)
+		}
+	})
+
 }
