@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"sync"
 
+	"encoding/json"
+
 	"github.com/gorilla/websocket"
 )
 
@@ -28,6 +30,24 @@ func (h *hub) Add(id string, ws *websocket.Conn) error {
 	if _, ok := h.m[id]; ok {
 		return fmt.Errorf("Already exists")
 	}
+
+	d := &username{
+		Username: id,
+	}
+	bd, err := json.Marshal(d)
+	if err != nil {
+		return err
+	}
+	rd := json.RawMessage(bd)
+
+	res := &response{
+		ID:    -1,
+		Cmd:   cmdLogin,
+		Error: nil,
+		Data:  &rd,
+	}
+
+	h.Broadcast(res, true)
 
 	ch := make(chan interface{}, 10)
 
@@ -55,10 +75,12 @@ func (h *hub) Del(id string) {
 }
 
 // Broadcast message ot all inboxes
-func (h *hub) Broadcast(m interface{}) error {
-	h.RLock()
+func (h *hub) Broadcast(m interface{}, locked bool) error {
+	if !locked {
+		h.RLock()
 
-	defer h.RUnlock()
+		defer h.RUnlock()
+	}
 
 	for _, ch := range h.m {
 		ch <- m

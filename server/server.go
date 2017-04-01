@@ -87,7 +87,7 @@ func (s *server) Login(id *string, req *request, ws *websocket.Conn) error {
 
 		return fmt.Errorf("Already logined")
 	}
-	d := &reqLoginData{}
+	d := &username{}
 	if req.Data == nil {
 
 		return fmt.Errorf("Username required")
@@ -104,7 +104,7 @@ func (s *server) Login(id *string, req *request, ws *websocket.Conn) error {
 
 		return fmt.Errorf("Username must not contain spaces")
 	}
-	if err := s.Add(*id, ws); err != nil {
+	if err := s.Add(d.Username, ws); err != nil {
 
 		return err
 	}
@@ -165,5 +165,5 @@ func (s *server) Publish(id *string, req *request, ws *websocket.Conn) error {
 		return fmt.Errorf("Receiver not found")
 	}
 
-	return s.Broadcast(res)
+	return s.Broadcast(res, false)
 }

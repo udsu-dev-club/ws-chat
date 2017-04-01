@@ -40,6 +40,10 @@ type resUsersData struct {
 	Users []string `json:"users"`
 }
 
+type username struct {
+	Username string `json:"username"`
+}
+
 type message struct {
 	Timestamp time.Time `json:"timestamp"`
 	Author    string    `json:"author"`
