@@ -18,7 +18,7 @@ const (
 type request struct {
 	ID   int32            `json:"id"`
 	Cmd  command          `json:"cmd"`
-	Data *json.RawMessage `json:"data"`
+	Data *json.RawMessage `json:"data,omitempty"`
 }
 
 type reqLoginData struct {
@@ -32,8 +32,8 @@ type reqPublishData struct {
 type response struct {
 	ID    int32            `json:"id"`
 	Cmd   command          `json:"cmd"`
-	Error *string          `json:"error"`
-	Data  *json.RawMessage `json:"data"`
+	Error *string          `json:"error,omitempty"`
+	Data  *json.RawMessage `json:"data,omitempty"`
 }
 
 type resUsersData struct {

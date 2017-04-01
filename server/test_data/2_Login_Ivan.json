@@ -1,0 +1,17 @@
+{
+    "requests": {
+        "Ivan": {
+            "id": 2,
+            "cmd": "LOGIN",
+            "data": {
+                "username": "Ivan"
+            }
+        }
+    },
+    "responses": {
+        "Ivan": {
+            "id": 2,
+            "cmd": "LOGIN"
+        }
+    }
+}

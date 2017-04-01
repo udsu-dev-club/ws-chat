@@ -1,0 +1,15 @@
+{
+    "requests": {
+        "Ivan": {
+            "id": 1,
+            "cmd": "LOGOUT"
+        }
+    },
+    "responses": {
+        "Ivan": {
+            "id": 1,
+            "cmd": "LOGOUT",
+            "error": "Not logined yet"
+        }
+    }
+}

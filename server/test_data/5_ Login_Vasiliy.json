@@ -1,0 +1,31 @@
+{
+    "requests": {
+        "Vasiliy": {
+            "id": 5,
+            "cmd": "LOGIN",
+            "data": {
+                "username": "Vasiliy"
+            }
+        }
+    },
+    "responses": {
+        "Ivan": {
+            "id": -1,
+            "cmd": "LOGIN",
+            "data": {
+                "username": "Vasiliy"
+            }
+        },
+        "Petr": {
+            "id": -1,
+            "cmd": "LOGIN",
+            "data": {
+                "username": "Vasiliy"
+            }
+        },
+        "Vasiliy": {
+            "id": 5,
+            "cmd": "LOGIN"
+        }
+    }
+}

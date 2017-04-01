@@ -1,0 +1,18 @@
+{
+    "requests": {
+        "Vasiliy": {
+			"id": 4,
+			"cmd": "LOGIN",
+			"data": {
+				"username": "Petr"
+			}
+		}
+    },
+    "responses": {
+        "Vasiliy": {
+			"id": 4,
+			"cmd": "LOGIN",
+			"error": "Already exists"
+		}
+    }
+}
