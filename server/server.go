@@ -67,6 +67,7 @@ func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
+
 func (s *server) Switch(id *string, req *request, ws *websocket.Conn) error {
 	switch req.Cmd {
 	case cmdLogin:
@@ -157,7 +158,7 @@ func (s *server) Publish(id *string, req *request, ws *websocket.Conn) error {
 		Data: &msgj,
 	}
 	if d.Message[0] == '@' {
-		receiver := strings.SplitN(d.Message, " ", 1)[0]
+		receiver := strings.Split(d.Message, " ")[0][1:]
 		if s.Direct(receiver, res) {
 			s.Direct(*id, res)
 

@@ -1,7 +1,7 @@
 {
     "requests": {
         "Vasiliy": {
-            "id": "6",
+            "id": "7",
             "cmd": "PUBLISH",
             "data": {
                 "message": "Hi everyone!"
@@ -38,8 +38,8 @@
                     "body": "Hi everyone!"
                 }
             },
-            "6": {
-                "id": "6",
+            "7": {
+                "id": "7",
                 "cmd": "PUBLISH"
             }
         }

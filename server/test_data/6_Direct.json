@@ -1,0 +1,37 @@
+{
+    "requests": {
+        "Ivan": {
+            "id": "6",
+            "cmd": "PUBLISH",
+            "data": {
+                "message": "@Petr hi there"
+            }
+        }
+    },
+    "responses": {
+        "Ivan": {
+            "-1": {
+                "id": "-1",
+                "cmd": "PUBLISH",
+                "data": {
+                    "author": "Ivan",
+                    "body": "@Petr hi there"
+                }
+            },
+            "6": {
+                "id": "6",
+                "cmd": "PUBLISH"
+            }
+        },
+        "Petr": {
+            "-1": {
+                "id": "-1",
+                "cmd": "PUBLISH",
+                "data": {
+                    "author": "Ivan",
+                    "body": "@Petr hi there"
+                }
+            }
+        }
+    }
+}
