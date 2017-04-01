@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/gorilla/websocket"
 	"github.com/stretchr/testify/assert"
@@ -40,6 +41,7 @@ func TestWorkflow(t *testing.T) {
 			Cmd: cmdLogout,
 		}))
 		res := &response{}
+		connIvan.SetReadDeadline(time.Now().Add(time.Second))
 		require.NoError(t, connIvan.ReadJSON(res))
 		assert.EqualValues(t, 1, res.ID)
 		assert.Equal(t, cmdLogout, res.Cmd)
@@ -58,6 +60,7 @@ func TestWorkflow(t *testing.T) {
 			Data: &dj,
 		}))
 		res := &response{}
+		connIvan.SetReadDeadline(time.Now().Add(time.Second))
 		require.NoError(t, connIvan.ReadJSON(res))
 		require.Nil(t, res.Error)
 		assert.EqualValues(t, 2, res.ID)
@@ -81,6 +84,7 @@ func TestWorkflow(t *testing.T) {
 		}))
 		{
 			res := &response{}
+			connPetr.SetReadDeadline(time.Now().Add(time.Second))
 			require.NoError(t, connPetr.ReadJSON(res))
 			require.Nil(t, res.Error)
 			assert.EqualValues(t, 3, res.ID)
@@ -88,6 +92,7 @@ func TestWorkflow(t *testing.T) {
 		}
 		{
 			res := &response{}
+			connIvan.SetReadDeadline(time.Now().Add(time.Second))
 			require.NoError(t, connIvan.ReadJSON(res))
 			require.Nil(t, res.Error)
 			assert.EqualValues(t, -1, res.ID)
