@@ -102,4 +102,26 @@ func TestWorkflow(t *testing.T) {
 			assert.Equal(t, "Petr", d.Username)
 		}
 	})
+	t.Run("4.Login Petr", func(t *testing.T) {
+		connPetr2, _, err := dlr.Dial("ws://localhost:8080/ws", nil)
+		require.NoError(t, err)
+		d := &username{
+			Username: "Petr",
+		}
+		dd, err := json.Marshal(d)
+		require.NoError(t, err)
+		dj := json.RawMessage(dd)
+		require.NoError(t, connPetr2.WriteJSON(&request{
+			ID:   4,
+			Cmd:  cmdLogin,
+			Data: &dj,
+		}))
+		res := &response{}
+		connPetr2.SetReadDeadline(time.Now().Add(time.Second))
+		require.NoError(t, connPetr2.ReadJSON(res))
+		require.NotNil(t, res.Error)
+		assert.EqualValues(t, 4, res.ID)
+		assert.Equal(t, cmdLogin, res.Cmd)
+		assert.Equal(t, "Already exists", *res.Error)
+	})
 }
