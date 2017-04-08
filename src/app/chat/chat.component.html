@@ -1,8 +1,13 @@
-<div class="log">
-    <div class="message" *ngFor="let message of messages">
-        <span class="timestamp">{{ message.timestamp }}</span>
-        <span class="author">{{ message.author }}</span>
-        <span class="body">{{ message.body }}</span>
-    </div>
+<div *ngIf="!ws.logined">
+    <label>Username: <input #username (keydown.enter)="login()" /></label>
 </div>
-<input [(ngModel)]="body" (keypress)="send($event)" />
+<div *ngIf="ws.logined">
+    <div class="log">
+        <div class="message" *ngFor="let message of messages">
+            <span class="timestamp">{{ message.timestamp }}</span>
+            <span class="author">{{ message.author }}</span>
+            <span class="body">{{ message.body }}</span>
+        </div>
+    </div>
+    <input [(ngModel)]="body" (keypress)="send($event)" />
+</div>
