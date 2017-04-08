@@ -1,7 +1,7 @@
 {
     "requests": {
         "Ivan": {
-            "id": "2",
+            "id": 2,
             "cmd": "LOGIN",
             "data": {
                 "username": "Ivan"
@@ -9,11 +9,18 @@
         }
     },
     "responses": {
-        "Ivan": {
-            "2": {
-                "id": "2",
+        "Ivan": [
+            {
+                "id": 2,
                 "cmd": "LOGIN"
+            },
+            {
+                "id": -1,
+                "cmd": "LOGIN",
+                "data": {
+                    "username": "Ivan"
+                }
             }
-        }
+        ]
     }
 }

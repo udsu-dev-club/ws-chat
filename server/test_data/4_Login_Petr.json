@@ -1,7 +1,7 @@
 {
     "requests": {
         "Vasiliy": {
-            "id": "4",
+            "id": 4,
             "cmd": "LOGIN",
             "data": {
                 "username": "Petr"
@@ -9,12 +9,12 @@
         }
     },
     "responses": {
-        "Vasiliy": {
-            "4": {
-                "id": "4",
+        "Vasiliy": [
+            {
+                "id": 4,
                 "cmd": "LOGIN",
                 "error": "Already exists"
             }
-        }
+        ]
     }
 }

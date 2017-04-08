@@ -1,7 +1,7 @@
 {
     "requests": {
         "Vasiliy": {
-            "id": "7",
+            "id": 7,
             "cmd": "PUBLISH",
             "data": {
                 "message": "Hi everyone!"
@@ -9,39 +9,39 @@
         }
     },
     "responses": {
-        "Ivan": {
-            "-1": {
-                "id": "-1",
+        "Ivan": [
+            {
+                "id": -1,
                 "cmd": "PUBLISH",
                 "data": {
                     "author": "Vasiliy",
                     "body": "Hi everyone!"
                 }
             }
-        },
-        "Petr": {
-            "-1": {
-                "id": "-1",
+        ],
+        "Petr": [
+            {
+                "id": -1,
                 "cmd": "PUBLISH",
                 "data": {
                     "author": "Vasiliy",
                     "body": "Hi everyone!"
                 }
             }
-        },
-        "Vasiliy": {
-            "-1": {
-                "id": "-1",
+        ],
+        "Vasiliy": [
+            {
+                "id": -1,
                 "cmd": "PUBLISH",
                 "data": {
                     "author": "Vasiliy",
                     "body": "Hi everyone!"
                 }
             },
-            "7": {
-                "id": "7",
+            {
+                "id": 7,
                 "cmd": "PUBLISH"
             }
-        }
+        ]
     }
 }

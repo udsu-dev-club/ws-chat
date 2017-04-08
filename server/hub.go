@@ -41,7 +41,7 @@ func (h *hub) Add(id string, ws *websocket.Conn) error {
 	rd := json.RawMessage(bd)
 
 	res := &response{
-		ID:    "-1",
+		ID:    -1,
 		Cmd:   cmdLogin,
 		Error: nil,
 		Data:  &rd,
@@ -58,6 +58,24 @@ func (h *hub) Add(id string, ws *websocket.Conn) error {
 	}()
 
 	h.m[id] = ch
+
+	for u := range h.m {
+		d := &username{
+			Username: u,
+		}
+		bd, err := json.Marshal(d)
+		if err != nil {
+			return err
+		}
+		rd := json.RawMessage(bd)
+		res := &response{
+			ID:    -1,
+			Cmd:   cmdLogin,
+			Error: nil,
+			Data:  &rd,
+		}
+		h.Direct(id, res, true)
+	}
 
 	return nil
 }
@@ -90,10 +108,12 @@ func (h *hub) Broadcast(m interface{}, locked bool) error {
 }
 
 // Direct send message. Return false if receiver is not found
-func (h *hub) Direct(id string, m interface{}) bool {
-	h.RLock()
+func (h *hub) Direct(id string, m interface{}, locked bool) bool {
+	if !locked {
+		h.RLock()
 
-	defer h.RUnlock()
+		defer h.RUnlock()
+	}
 
 	if ch, ok := h.m[id]; ok {
 		ch <- m

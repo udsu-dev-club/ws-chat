@@ -12,7 +12,7 @@ const (
 )
 
 type request struct {
-	ID   string           `json:"id"`
+	ID   int              `json:"id"`
 	Cmd  command          `json:"cmd"`
 	Data *json.RawMessage `json:"data,omitempty"`
 }
@@ -26,7 +26,7 @@ type reqPublishData struct {
 }
 
 type response struct {
-	ID    string           `json:"id"`
+	ID    int              `json:"id"`
 	Cmd   command          `json:"cmd"`
 	Error *string          `json:"error,omitempty"`
 	Data  *json.RawMessage `json:"data,omitempty"`

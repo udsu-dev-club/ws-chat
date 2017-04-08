@@ -1,7 +1,7 @@
 {
     "requests": {
         "Vasiliy": {
-            "id": "5",
+            "id": 5,
             "cmd": "LOGIN",
             "data": {
                 "username": "Vasiliy"
@@ -9,29 +9,50 @@
         }
     },
     "responses": {
-        "Ivan": {
-            "-1": {
-                "id": "-1",
+        "Ivan": [
+            {
+                "id": -1,
                 "cmd": "LOGIN",
                 "data": {
                     "username": "Vasiliy"
                 }
             }
-        },
-        "Petr": {
-            "-1": {
-                "id": "-1",
+        ],
+        "Petr": [
+            {
+                "id": -1,
                 "cmd": "LOGIN",
                 "data": {
                     "username": "Vasiliy"
                 }
             }
-        },
-        "Vasiliy": {
-            "5": {
-                "id": "5",
+        ],
+        "Vasiliy": [
+            {
+                "id": 5,
                 "cmd": "LOGIN"
+            },
+            {
+                "id": -1,
+                "cmd": "LOGIN",
+                "data": {
+                    "username": "Vasiliy"
+                }
+            },
+            {
+                "id": -1,
+                "cmd": "LOGIN",
+                "data": {
+                    "username": "Ivan"
+                }
+            },
+            {
+                "id": -1,
+                "cmd": "LOGIN",
+                "data": {
+                    "username": "Petr"
+                }
             }
-        }
+        ]
     }
 }

@@ -49,6 +49,7 @@ func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 			return
 		}
+		log.Printf("Got request %q", req.Cmd)
 
 		res := &response{
 			ID:  req.ID,
@@ -61,7 +62,7 @@ func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			res.Error = &serr
 		}
 		if len(*id) > 0 {
-			s.Direct(*id, res)
+			s.Direct(*id, res, false)
 		} else {
 			ws.WriteJSON(res)
 		}
@@ -153,14 +154,14 @@ func (s *server) Publish(id *string, req *request, ws *websocket.Conn) error {
 	}
 	msgj := json.RawMessage(msgb)
 	res := response{
-		ID:   "-1",
+		ID:   -1,
 		Cmd:  cmdPub,
 		Data: &msgj,
 	}
 	if d.Message[0] == '@' {
 		receiver := strings.Split(d.Message, " ")[0][1:]
-		if s.Direct(receiver, res) {
-			s.Direct(*id, res)
+		if s.Direct(receiver, res, false) {
+			s.Direct(*id, res, false)
 
 			return nil
 		}

@@ -15,34 +15,38 @@ import (
 	"io/ioutil"
 	"time"
 
+	"reflect"
+
+	"fmt"
+
 	"github.com/gorilla/websocket"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 var users = []string{"Ivan", "Petr", "Vasiliy"}
 
 type Case struct {
-	Requests  map[string]json.RawMessage            `json:"requests"`
-	Responses map[string]map[string]json.RawMessage `json:"responses"`
+	Requests  map[string]json.RawMessage `json:"requests"`
+	Responses map[string][]interface{}   `json:"responses"`
 }
 
-type ID struct {
-	ID string `json:"id"`
-}
-
-func wait(t *testing.T, ws *websocket.Conn, responses map[string]json.RawMessage) {
+func wait(ws *websocket.Conn, responses []interface{}) error {
+outLoop:
 	for len(responses) > 0 {
 		ws.SetReadDeadline(time.Now().Add(time.Second))
-		res := json.RawMessage{}
-		require.NoError(t, ws.ReadJSON(&res))
-		id := &ID{}
-		require.NoError(t, json.Unmarshal(res, id))
-		expect, ok := responses[id.ID]
-		require.True(t, ok, id.ID)
-		assert.JSONEq(t, string(expect), string(res))
-		delete(responses, id.ID)
+		var res interface{}
+		if err := ws.ReadJSON(&res); err != nil {
+			return err
+		}
+		for i, act := range responses {
+			if reflect.DeepEqual(res, act) {
+				responses = append(responses[:i], responses[i+1:]...)
+				continue outLoop
+			}
+		}
+		return fmt.Errorf("Unknown response %v", res)
 	}
+	return nil
 }
 
 func TestMain(m *testing.M) {
@@ -83,7 +87,7 @@ func TestWorkflow(t *testing.T) {
 				require.NoError(t, conns[u].WriteJSON(d))
 			}
 			for u, d := range cc.Responses {
-				wait(t, conns[u], d)
+				require.NoError(t, wait(conns[u], d), u)
 			}
 		})
 	}

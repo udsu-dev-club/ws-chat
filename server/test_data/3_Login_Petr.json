@@ -1,7 +1,7 @@
 {
     "requests": {
         "Petr": {
-            "id": "3",
+            "id": 3,
             "cmd": "LOGIN",
             "data": {
                 "username": "Petr"
@@ -9,20 +9,34 @@
         }
     },
     "responses": {
-        "Petr": {
-            "3": {
-                "id": "3",
+        "Petr": [
+            {
+                "id": 3,
                 "cmd": "LOGIN"
+            },
+            {
+                "id": -1,
+                "cmd": "LOGIN",
+                "data": {
+                    "username": "Petr"
+                }
+            },
+            {
+                "id": -1,
+                "cmd": "LOGIN",
+                "data": {
+                    "username": "Ivan"
+                }
             }
-        },
-        "Ivan": {
-            "-1": {
-                "id": "-1",
+        ],
+        "Ivan": [
+            {
+                "id": -1,
                 "cmd": "LOGIN",
                 "data": {
                     "username": "Petr"
                 }
             }
-        }
+        ]
     }
 }
